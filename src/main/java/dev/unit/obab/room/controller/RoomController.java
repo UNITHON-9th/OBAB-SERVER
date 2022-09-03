@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.unit.obab.core.domain.ResponseEntity;
 import dev.unit.obab.room.controller.dto.CreateRoomDto;
 import dev.unit.obab.room.controller.dto.EnterRoomDto;
-import dev.unit.obab.room.domain.MealType;
 import dev.unit.obab.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 

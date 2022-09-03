@@ -50,7 +50,7 @@ class RoomServiceImplTest {
 
 		@BeforeEach
 		void setUp() {
-			inviteCode = roomService.createRoom(3, BREAKFAST);
+			inviteCode = roomService.createRoom(3);
 		}
 
 		@Test
