@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,11 @@ public class RedisUtil {
         valueOperations.set(key,value);
     }
 
+    public void setListData(String key, List<String> value){
+        final ListOperations<String,String> ops = stringRedisTemplate.opsForList();
+        value.forEach(o -> ops.rightPush(key,o));
+    }
+
     public void setDataExpire(String key,String value,long duration){
         ValueOperations<String,String> valueOperations = stringRedisTemplate.opsForValue();
         Duration expireDuration = Duration.ofSeconds(duration);
@@ -34,8 +40,4 @@ public class RedisUtil {
         stringRedisTemplate.delete(key);
     }
 
-//    public void setListOps(String key, List<Integer> values){
-//        values.stream().forEach(this.stringRedisTemplate.opsForList().rightPush(key,values));
-////        stringRedisTemplate.opsForList().rightPushAll(key, values);
-//    }
 }

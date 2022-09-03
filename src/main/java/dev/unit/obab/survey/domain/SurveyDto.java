@@ -8,6 +8,6 @@ import java.util.List;
 public class SurveyDto {
 
     private String deviceId;
-    private List<Integer> checkList;
+    private List<String> checkList;
 
 }
