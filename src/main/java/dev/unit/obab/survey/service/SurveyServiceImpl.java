@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -23,8 +22,6 @@ public class SurveyServiceImpl implements SurveyService {
     private final RedisUtil redisUtil;
 
     /* 개인 투표 결과 저장 */
-    // stringRedisTemplate.opsForList().rightPushAll(key, values);
-    // value = first 어쩌구 쿼리스트링 값
     // 스피드왕의 선택은?!
     // 점수 api 쏘는 시간
     // 너의 선택은? = /
