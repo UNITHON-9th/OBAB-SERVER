@@ -1,25 +1,29 @@
 package dev.unit.obab.notification.service;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+
 import dev.unit.obab.core.domain.ResponseType;
 import dev.unit.obab.core.exception.BadRequestException;
 import dev.unit.obab.core.exception.ExternalServerException;
 import dev.unit.obab.core.exception.NotFoundException;
 import dev.unit.obab.notification.domain.FcmMessage;
-import java.io.IOException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 
@@ -42,7 +46,7 @@ public class NotificationService {
         OkHttpClient client = new OkHttpClient();
 
         Flux<String> fcmMessages = Flux.fromIterable(
-            targets.stream().map(token -> makeMessage(token, title, body)).toList());
+            targets.stream().map(token -> makeMessage(token, title, body)).collect(Collectors.toList()));
 
         fcmMessages.subscribe(message -> {
                 RequestBody requestBody = RequestBody.create(message,
