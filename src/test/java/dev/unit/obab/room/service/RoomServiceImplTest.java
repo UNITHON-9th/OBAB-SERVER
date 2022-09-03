@@ -3,6 +3,7 @@ package dev.unit.obab.room.service;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ class RoomServiceImplTest {
 		assertThat(findRoom.getTotalCount()).isEqualTo(totalCount);
 	}
 
+	@Disabled
 	@Nested
 	class 방_입장_테스트{
 
