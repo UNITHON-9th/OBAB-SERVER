@@ -29,7 +29,6 @@ class RoomControllerTest extends BasicControllerTest {
 		//given
 		ObjectNode createRoomDto = objectMapper.createObjectNode();
 		createRoomDto.put("totalCount", 5);
-		createRoomDto.put("mealType", "BREAKFAST");
 
 		//when
 		mockMvc.perform(post("/rooms")

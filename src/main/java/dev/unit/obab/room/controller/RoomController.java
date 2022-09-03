@@ -23,10 +23,7 @@ public class RoomController {
 
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> createRoom(@RequestBody CreateRoomDto createRoomDto) {
-		String inviteCode = roomService.createRoom(
-			createRoomDto.getTotalCount(),
-			MealType.valueOf(createRoomDto.getMealType())
-		);
+		String inviteCode = roomService.createRoom(createRoomDto.getTotalCount());
 
 		return ResponseEntity.successResponse(Map.of("inviteCode", inviteCode));
 	}
