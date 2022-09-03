@@ -1,9 +1,6 @@
 package dev.unit.obab.survey.domain;
 
-import io.swagger.models.auth.In;
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 public class SurveyDto {

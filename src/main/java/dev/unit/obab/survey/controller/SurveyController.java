@@ -3,10 +3,10 @@ package dev.unit.obab.survey.controller;
 import dev.unit.obab.survey.domain.SurveyDto;
 import dev.unit.obab.survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RequiredArgsConstructor
@@ -20,6 +20,4 @@ public class SurveyController {
     public void saveSurveyResult(@RequestBody SurveyDto surveyDto) {
         this.surveyService.saveSurveyResult(surveyDto);
     }
-
-
 }
