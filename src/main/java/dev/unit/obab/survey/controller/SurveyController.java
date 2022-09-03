@@ -24,6 +24,6 @@ public class SurveyController {
     public SurveyResponse getSurveyResult(
             @PathVariable String deviceId,
             @RequestParam String roomNo ) {
-        return surveyService.getSurveyResult(deviceId);
+        return surveyService.getSurveyResult(deviceId, roomNo);
     }
 }

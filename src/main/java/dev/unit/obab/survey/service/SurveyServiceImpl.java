@@ -28,11 +28,12 @@ public class SurveyServiceImpl implements SurveyService {
 
     /* 개인 투표 결과 저장 */
     public void saveSurveyResult(CreateSurveyRequest createSurveyRequest) {
+
+        Room room = getRoom(createSurveyRequest.getRoomNo());
+
+        checkValidDeviceId(room, createSurveyRequest.getDeviceId());
         surveyRepository.save(createSurveyRequest.toEntity());
 
-        Room room = getRoom(createSurveyRequest);
-
-        checkValidDeviceId(room, surveyDto.getDeviceId());
         room.addSubmittedCount();
         roomRedisRepository.save(room);
 
@@ -51,14 +52,15 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public SurveyResponse getSurveyResult(String deviceId) {
-        return surveyRepository.findById(deviceId).orElseThrow();
+    public SurveyResponse getSurveyResult(String deviceId, String roomNo) {
+        Survey survey = surveyRepository.findById(deviceId).orElseThrow();
+        Room room = getRoom(roomNo);
+        return new SurveyResponse(survey, room.getSubmittedCount());
     }
 
-    private Room getRoom(CreateSurveyRequest createSurveyRequest) {
-        Room room = roomRedisRepository.findById(createSurveyRequest.getRoomNo())
+    private Room getRoom(String roomNo) {
+        return roomRedisRepository.findById(roomNo)
                 .orElseThrow(() -> new IllegalStateException("no room"));
-        return room;
     }
 
 
