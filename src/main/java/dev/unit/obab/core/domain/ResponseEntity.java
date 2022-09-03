@@ -42,6 +42,10 @@ public class ResponseEntity<T> {
         return new ResponseEntity<>(type.getCode(), message, data);
     }
 
+    public static <T> ResponseEntity<T> successResponse(ResponseType type, T data) {
+        return new ResponseEntity<>(type.getCode(), type.getMessage(), data);
+    }
+
     public static <T> ResponseEntity<T> failureResponse(ResponseType type) {
         return new ResponseEntity<>(type.getCode(), type.getMessage(), null);
     }
