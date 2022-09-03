@@ -2,6 +2,8 @@ package dev.unit.obab.room.controller;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,7 @@ public class RoomController {
 	private final RoomService roomService;
 
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> createRoom(@RequestBody CreateRoomDto createRoomDto) {
+	public ResponseEntity<Map<String, Object>> createRoom(@Valid @RequestBody CreateRoomDto createRoomDto) {
 		String inviteCode = roomService.createRoom(createRoomDto.getTotalCount());
 
 		return ResponseEntity.successResponse(Map.of("inviteCode", inviteCode));
