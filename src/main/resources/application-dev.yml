@@ -7,8 +7,8 @@ spring:
     port: 6379
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/obab
-    username: root
+    url: jdbc:mysql://3.37.236.75:3306/obab
+    username: obab
     password: 1234
   jpa:
     database: mysql
@@ -17,5 +17,5 @@ spring:
     hibernate:
       ddl-auto: none
 fcm:
-  project-id: ""
-  firebase-path: ""
+  project-id: "obab-1fbb7"
+  firebase-path: "firebase/obab-1fbb7-firebase-adminsdk-zl94u-069a3352bf.json"
