@@ -3,7 +3,6 @@ package dev.unit.obab.room.service;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import dev.unit.obab.core.util.RedisUtil;
 import dev.unit.obab.room.domain.Room;
 import dev.unit.obab.room.repository.RoomRedisRepository;
+import dev.unit.obab.room.service.dto.EnterRoomResult;
 
 @Transactional
 @ActiveProfiles("local")
@@ -44,7 +44,6 @@ class RoomServiceImplTest {
 		assertThat(findRoom.getTotalCount()).isEqualTo(totalCount);
 	}
 
-	@Disabled
 	@Nested
 	class 방_입장_테스트{
 
@@ -61,16 +60,35 @@ class RoomServiceImplTest {
 			String device1 = "device1";
 
 			//when
-			String roomNo = roomService.enterRoom(inviteCode, device1);
+			EnterRoomResult enterRoomResult = roomService.enterRoom(inviteCode, device1);
 
 			//then
-			Room room = roomRepository.findById(roomNo).get();
+			Room room = roomRepository.findById(enterRoomResult.getRoomNo()).get();
+
+			assertThat(room).isNotNull();
+			assertThat(room.getDeviceIds())
+				.hasSize(1)
+				.containsExactly(device1);
+		}
+
+		@Test
+		void 중복된_사용자_방_입장() {
+			//given
+			String device1 = "device1";
+
+			//when
+			EnterRoomResult enterRoomResult = roomService.enterRoom(inviteCode, device1);
+			EnterRoomResult enterRoomResult2 = roomService.enterRoom(inviteCode, device1);
+
+			//then
+			Room room = roomRepository.findById(enterRoomResult2.getRoomNo()).get();
 
 			assertThat(room).isNotNull();
 			assertThat(room.getDeviceIds())
 				.hasSize(1)
 				.containsExactly(device1);
 
+			assertThat(enterRoomResult2.isDuplicatedUser()).isTrue();
 		}
 	}
 }

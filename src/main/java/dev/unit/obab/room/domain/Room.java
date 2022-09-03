@@ -24,6 +24,7 @@ public class Room {
 
 	/* 제출한 인원 수 */
 	private int submittedCount = 0;
+
 	/* 결과 제출한 디바이스 id*/
 	private List<String> deviceIds = new ArrayList<>();
 
@@ -45,6 +46,10 @@ public class Room {
 
 	public void addSubmittedCount() {
 		++this.submittedCount;
+	}
+
+	public boolean isAlreadyEntered(String deviceId) {
+		return this.deviceIds.contains(deviceId);
 	}
 
 }
