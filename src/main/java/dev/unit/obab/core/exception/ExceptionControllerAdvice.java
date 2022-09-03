@@ -30,6 +30,14 @@ public class ExceptionControllerAdvice {
         return ResponseEntity.failureResponse(exception.getResponseType());
     }
 
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(ExternalServerException.class)
+    public <T> ResponseEntity<T> handleNotFoundException(ExternalServerException exception) {
+        printLog(exception);
+        return ResponseEntity.failureResponse(exception.getResponseType());
+    }
+    
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public <T> ResponseEntity<T> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
@@ -41,7 +49,7 @@ public class ExceptionControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(ExternalServerException.class)
     public <T> ResponseEntity<T> handleNotFoundException(NotFoundException exception) {
         printLog(exception);
         return ResponseEntity.failureResponse(exception.getResponseType());
