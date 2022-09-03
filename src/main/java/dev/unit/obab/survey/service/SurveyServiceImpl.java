@@ -1,6 +1,8 @@
 package dev.unit.obab.survey.service;
 
 import dev.unit.obab.core.util.RedisUtil;
+import dev.unit.obab.room.domain.Room;
+import dev.unit.obab.room.repository.RoomRedisRepository;
 import dev.unit.obab.survey.domain.Survey;
 import dev.unit.obab.survey.domain.SurveyDto;
 import dev.unit.obab.survey.repository.SurveyRepository;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SurveyServiceImpl implements SurveyService {
 
     private final SurveyRepository surveyRepository;
+    private final RoomRedisRepository roomRedisRepository;
 
     // Redis Template
     private final RedisUtil redisUtil;
@@ -28,11 +31,22 @@ public class SurveyServiceImpl implements SurveyService {
     // 랜덤 ----> 점수로 (아무거나)
     public void saveSurveyResult(SurveyDto surveyDto) {
         log.info("@@@@@@@@ {}", surveyDto.getDeviceId());
-        redisUtil.setListData(surveyDto.getDeviceId(), surveyDto.getCheckList());
-    }
+        log.info("@@@@@@@@ {}", surveyDto.getRoomNo());
+//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getRoomNo());
+//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getCountry().toString());
+//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getFood().toString());
+//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getIsSpicy().toString());
+//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getIsSoup().toString());
+//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getIsHot().toString());
 
-    // redis 저장 ->> 투표 결과
-    public void checkCount(Survey survey) {
+        surveyRepository.save(surveyDto.toEntity());
 
+        Room room = roomRedisRepository.findById(surveyDto.getRoomNo())
+                .orElseThrow(() -> new IllegalStateException("no room"));
+
+        if (room.isFull()) {
+            // todo :
+
+        }
     }
 }

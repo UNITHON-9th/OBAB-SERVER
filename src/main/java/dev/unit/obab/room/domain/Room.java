@@ -12,7 +12,7 @@ import lombok.Getter;
  * 방
  */
 @Getter
-@RedisHash(value = "room", timeToLive = 300)
+@RedisHash(value = "room")
 public class Room {
 
 	/* 초대 코드 */
@@ -22,7 +22,7 @@ public class Room {
 	/* 방 총 인원 */
 	private int totalCount;
 
-	/* 입장 디바이스 정보들*/
+	/* 결과 제출한 디바이스 id*/
 	private List<String> deviceIds = new ArrayList<>();
 
 	public Room(int totalCount) {

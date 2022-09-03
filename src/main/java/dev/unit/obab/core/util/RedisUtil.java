@@ -4,6 +4,7 @@ package dev.unit.obab.core.util;
 import java.time.Duration;
 import java.util.List;
 
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
