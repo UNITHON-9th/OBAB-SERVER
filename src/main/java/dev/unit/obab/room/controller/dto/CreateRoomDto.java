@@ -1,14 +1,13 @@
 package dev.unit.obab.room.controller.dto;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import org.hibernate.validator.constraints.Range;
 
 import lombok.Getter;
 
 @Getter
 public class CreateRoomDto {
 
-	@Min(1)
-	@Max(100)
+	@Range(min = 1, max = 100)
 	private int totalCount;
+
 }
