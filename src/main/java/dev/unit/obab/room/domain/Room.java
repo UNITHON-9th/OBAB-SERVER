@@ -12,7 +12,7 @@ import lombok.Getter;
  * 방
  */
 @Getter
-@RedisHash(value = "room", timeToLive = 300)
+@RedisHash(value = "room")
 public class Room {
 
 	/* 초대 코드 */
@@ -30,7 +30,7 @@ public class Room {
 	}
 
 	public void enter(String deviceId) {
-		if(deviceIds.size() >= totalCount){
+		if (deviceIds.size() >= totalCount) {
 			throw new IllegalArgumentException("정원이 다 찼습니다.");
 		}
 		this.deviceIds.add(deviceId);

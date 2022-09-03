@@ -20,7 +20,8 @@ public class RoomServiceImpl implements RoomService {
 	private final RoomRedisRepository roomRedisRepository;
 	private final RedisUtil redisUtil;
 
-	public String createRoom(int totalCount){
+	@Override
+	public String createRoom(int totalCount) {
 		Room room = new Room(totalCount);
 
 		final Room savedRoom = roomRedisRepository.save(room);
@@ -30,7 +31,7 @@ public class RoomServiceImpl implements RoomService {
 		/* invitecode : roomno 저장 */
 		redisUtil.setData(inviteCode, savedRoom.getRoomNo());
 
-		if(!Objects.nonNull(redisUtil.getData(inviteCode))){
+		if (!Objects.nonNull(redisUtil.getData(inviteCode))) {
 			throw new IllegalArgumentException("레디스에 저장이 되지 않았습니다.");
 		}
 
