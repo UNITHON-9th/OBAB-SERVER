@@ -51,10 +51,10 @@ public class RoomServiceImpl implements RoomService {
 		return new EnterRoomResult(room.getRoomNo(), false);
 	}
 
-	private Room getRoom(final String roomNo) {
-		Room room = roomRedisRepository.findById(roomNo)
+	@Override
+	public Room getRoom(final String roomNo) {
+		return roomRedisRepository.findById(roomNo)
 			.orElseThrow(() -> new IllegalStateException("해당하는 roomNo에 해당하는 방이 없습니다."));
-		return room;
 	}
 
 }
