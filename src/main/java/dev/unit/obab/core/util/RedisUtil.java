@@ -2,6 +2,8 @@ package dev.unit.obab.core.util;
 
 
 import java.time.Duration;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -31,4 +33,9 @@ public class RedisUtil {
     public void deleteData(String key){
         stringRedisTemplate.delete(key);
     }
+
+//    public void setListOps(String key, List<Integer> values){
+//        values.stream().forEach(this.stringRedisTemplate.opsForList().rightPush(key,values));
+////        stringRedisTemplate.opsForList().rightPushAll(key, values);
+//    }
 }
