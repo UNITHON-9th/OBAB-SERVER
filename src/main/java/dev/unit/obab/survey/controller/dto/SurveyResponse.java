@@ -11,14 +11,16 @@ public class SurveyResponse {
     private Boolean isSoup;
     private Boolean isHot;
     private int submitCount;
+    private int totalCount;
 
-   public SurveyResponse(Survey survey, int submitCount) {
+   public SurveyResponse(Survey survey, int submitCount, int totalCount) {
        this.country = survey.getCountry();
        this.food = survey.getFood();
        this.isSpicy = survey.getIsSpicy();
        this.isSoup = survey.getIsSoup();
        this.isHot = survey.getIsHot();
        this.submitCount = submitCount;
+       this.totalCount = totalCount;
    }
 
 }

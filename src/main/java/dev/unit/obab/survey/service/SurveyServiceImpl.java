@@ -58,7 +58,7 @@ public class SurveyServiceImpl implements SurveyService {
         Survey survey = surveyRepository.findById(deviceId).orElseThrow();
 
         Room room = roomService.getRoom(roomNo);
-        return new SurveyResponse(survey, room.getSubmittedCount());
+        return new SurveyResponse(survey, room.getSubmittedCount(), room.getTotalCount());
     }
 
     /* 방에 참여한 사용자인지 유효성 체크 */
