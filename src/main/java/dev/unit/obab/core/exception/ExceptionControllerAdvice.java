@@ -1,5 +1,7 @@
 package dev.unit.obab.core.exception;
 
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,9 +32,12 @@ public class ExceptionControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public <T> ResponseEntity<T> handleBadRequestException(MethodArgumentNotValidException exception) {
-        printLog("MethodArgumentNotValidException", exception.getMessage());
-        return ResponseEntity.failureResponse(ResponseType.FAILURE, exception.getMessage());
+    public <T> ResponseEntity<T> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        String message = exception.getFieldErrors().stream()
+            .map(e -> e.getField() + " - " + e.getDefaultMessage())
+            .collect(Collectors.joining(", "));
+        printLog(exception.getClass().getName(), message);
+        return ResponseEntity.failureResponse(ResponseType.ARGUMENT_NOT_VALID, message);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
