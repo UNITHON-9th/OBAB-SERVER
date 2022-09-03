@@ -1,5 +1,7 @@
 package dev.unit.obab.room.controller;
 
+import static dev.unit.obab.core.domain.ResponseType.*;
+
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -37,7 +39,7 @@ public class RoomController {
 		final Map<String, Object> roomNo = Map.of("roomNo", enterRoomResult.getRoomNo());
 
 		if (enterRoomResult.isDuplicatedUser()) {
-			return new ResponseEntity<>("CM04", "이미 참여한 사용자입니다.", roomNo);
+			return ResponseEntity.successResponse(USER_DUPLICATE_SUCCESS, roomNo);
 		}
 
 		return ResponseEntity.successResponse(roomNo);
