@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.unit.obab.core.domain.ResponseEntity;
 import dev.unit.obab.room.controller.dto.CreateRoomDto;
+import dev.unit.obab.room.controller.dto.EnterRoomDto;
 import dev.unit.obab.room.domain.MealType;
 import dev.unit.obab.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -29,4 +30,12 @@ public class RoomController {
 
 		return ResponseEntity.successResponse(Map.of("inviteCode", inviteCode));
 	}
+
+	@PostMapping("/enter")
+	public ResponseEntity<Map<String, Object>> enterRoom(@RequestBody EnterRoomDto enterRoomDto) {
+		String roomNo = roomService.enterRoom(enterRoomDto.getInviteCode(), enterRoomDto.getDeviceId());
+
+		return ResponseEntity.successResponse(Map.of("roomNo", roomNo));
+	}
+
 }
