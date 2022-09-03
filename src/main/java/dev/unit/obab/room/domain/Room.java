@@ -19,9 +19,11 @@ public class Room {
 	@Id
 	private String roomNo;
 
-	/* 방 총 인원 */
+	/* 방 총 인원 수 */
 	private int totalCount;
 
+	/* 제출한 인원 수 */
+	private int submittedCount = 0;
 	/* 결과 제출한 디바이스 id*/
 	private List<String> deviceIds = new ArrayList<>();
 
@@ -33,11 +35,16 @@ public class Room {
 		if (deviceIds.size() >= totalCount) {
 			throw new IllegalArgumentException("정원이 다 찼습니다.");
 		}
+
 		this.deviceIds.add(deviceId);
 	}
 
 	public boolean isFull() {
-		return this.totalCount == deviceIds.size();
+		return this.totalCount == this.submittedCount;
+	}
+
+	public void addSubmittedCount() {
+		++this.submittedCount;
 	}
 
 }
