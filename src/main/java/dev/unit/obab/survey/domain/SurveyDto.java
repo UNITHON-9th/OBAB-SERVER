@@ -26,5 +26,4 @@ public class SurveyDto {
                 .isSoup(this.isSoup)
                 .build();
     }
-
 }

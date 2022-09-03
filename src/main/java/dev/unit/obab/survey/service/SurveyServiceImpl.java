@@ -32,21 +32,19 @@ public class SurveyServiceImpl implements SurveyService {
     public void saveSurveyResult(SurveyDto surveyDto) {
         log.info("@@@@@@@@ {}", surveyDto.getDeviceId());
         log.info("@@@@@@@@ {}", surveyDto.getRoomNo());
-//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getRoomNo());
-//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getCountry().toString());
-//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getFood().toString());
-//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getIsSpicy().toString());
-//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getIsSoup().toString());
-//        redisUtil.setData(surveyDto.getDeviceId(),surveyDto.getIsHot().toString());
-
         surveyRepository.save(surveyDto.toEntity());
 
         Room room = roomRedisRepository.findById(surveyDto.getRoomNo())
                 .orElseThrow(() -> new IllegalStateException("no room"));
 
-        if (room.isFull()) {
-            // todo :
+        room.enter(surveyDto.getDeviceId());
+        roomRedisRepository.save(room);
 
+        if (room.isFull()) {
+            // todo : 이벤트 -> 다른 서비스 호출 (통계, 다른 정보)
+            // room deviceId -> 자료구조에 저장 한 후 서비스 호출
         }
+
     }
+
 }
