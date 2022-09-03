@@ -13,6 +13,7 @@ import dev.unit.obab.core.domain.ResponseEntity;
 import dev.unit.obab.room.controller.dto.CreateRoomDto;
 import dev.unit.obab.room.controller.dto.EnterRoomDto;
 import dev.unit.obab.room.service.RoomService;
+import dev.unit.obab.room.service.dto.EnterRoomResult;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,10 +31,16 @@ public class RoomController {
 	}
 
 	@PostMapping("/enter")
-	public ResponseEntity<Map<String, Object>> enterRoom(@Valid @RequestBody EnterRoomDto enterRoomDto) {
-		String roomNo = roomService.enterRoom(enterRoomDto.getInviteCode(), enterRoomDto.getDeviceId());
+	public ResponseEntity<Map<String, Object>> enterRoom(@RequestBody EnterRoomDto enterRoomDto) {
+		EnterRoomResult enterRoomResult = roomService.enterRoom(enterRoomDto.getInviteCode(),
+			enterRoomDto.getDeviceId());
+		final Map<String, Object> roomNo = Map.of("roomNo", enterRoomResult.getRoomNo());
 
-		return ResponseEntity.successResponse(Map.of("roomNo", roomNo));
+		if (enterRoomResult.isDuplicatedUser()) {
+			return new ResponseEntity<>("CM04", "이미 참여한 사용자입니다.", roomNo);
+		}
+
+		return ResponseEntity.successResponse(roomNo);
 	}
 
 }
