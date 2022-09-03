@@ -17,7 +17,7 @@ public class Room {
 
 	/* 초대 코드 */
 	@Id
-	private String inviteCode;
+	private String roomno;
 
 	/* 방 총 인원 */
 	private int totalCount;
@@ -31,18 +31,20 @@ public class Room {
 	/* 식사 타입 */
 	private MealType mealType;
 
-	public Room(String inviteCode, int totalCount, MealType mealType) {
-		this.inviteCode = inviteCode;
+	public Room(int totalCount, MealType mealType) {
 		this.totalCount = totalCount;
 		this.mealType = mealType;
 	}
 
-	public void addDeviceIds(String deviceId) {
+	public void enter(String deviceId) {
+		if(deviceIds.size() >= totalCount){
+			throw new IllegalArgumentException("정원이 다 찼습니다.");
+		}
 		this.deviceIds.add(deviceId);
 	}
 
 	public boolean isFull() {
-		return this.totalCount == this.enteredCount;
+		return this.totalCount == deviceIds.size();
 	}
 
 }
