@@ -1,6 +1,7 @@
 package dev.unit.obab.room.service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
 		String inviteCode = RandomUtils.createInviteCode();
 
 		/* invitecode : roomno 저장 */
-		redisUtil.setData(inviteCode, savedRoom.getRoomno());
+		redisUtil.setData(inviteCode, savedRoom.getRoomNo());
 
 		if(!Objects.nonNull(redisUtil.getData(inviteCode))){
 			throw new IllegalArgumentException("레디스에 저장이 되지 않았습니다.");
@@ -38,16 +39,15 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public String enterRoom(String inviteCode, String deviceId) {
-		String roomNo = redisUtil.getData(inviteCode);
-
-		System.out.println("roomNo : " + roomNo);
+		String roomNo = Optional.ofNullable(redisUtil.getData(inviteCode))
+			.orElseThrow(() -> new IllegalArgumentException("잘못된 추천 코드입니다."));
 
 		Room room = roomRedisRepository.findById(roomNo)
-			.orElseThrow(() -> new IllegalStateException());
+			.orElseThrow(() -> new IllegalStateException("해당하는 roomNo에 해당하는 방이 없습니다."));
 
 		room.enter(deviceId);
 
-		return roomRedisRepository.save(room).getRoomno();
+		return roomRedisRepository.save(room).getRoomNo();
 	}
 
 }

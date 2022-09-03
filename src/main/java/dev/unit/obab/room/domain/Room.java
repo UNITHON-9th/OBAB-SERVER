@@ -17,13 +17,10 @@ public class Room {
 
 	/* 초대 코드 */
 	@Id
-	private String roomno;
+	private String roomNo;
 
 	/* 방 총 인원 */
 	private int totalCount;
-
-	/* 현재 입장 인원 */
-	private int enteredCount = 0;
 
 	/* 입장 디바이스 정보들*/
 	private List<String> deviceIds = new ArrayList<>();
