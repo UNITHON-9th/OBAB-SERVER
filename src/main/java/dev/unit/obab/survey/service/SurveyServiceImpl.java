@@ -1,5 +1,6 @@
 package dev.unit.obab.survey.service;
 
+import dev.unit.obab.room.service.RoomService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class SurveyServiceImpl implements SurveyService {
 
     private final SurveyRepository surveyRepository;
     private final RoomRedisRepository roomRedisRepository;
+    private final RoomService roomService;
 
     // Redis Template
     private final RedisUtil redisUtil;
@@ -29,7 +31,7 @@ public class SurveyServiceImpl implements SurveyService {
     /* 개인 투표 결과 저장 */
     public void saveSurveyResult(CreateSurveyRequest createSurveyRequest) {
 
-        Room room = getRoom(createSurveyRequest.getRoomNo());
+        Room room = roomService.getRoom(createSurveyRequest.getRoomNo());
 
         checkValidDeviceId(room, createSurveyRequest.getDeviceId());
         surveyRepository.save(createSurveyRequest.toEntity());
@@ -54,16 +56,10 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public SurveyResponse getSurveyResult(String deviceId, String roomNo) {
         Survey survey = surveyRepository.findById(deviceId).orElseThrow();
-        Room room = getRoom(roomNo);
+
+        Room room = roomService.getRoom(roomNo);
         return new SurveyResponse(survey, room.getSubmittedCount());
     }
-
-    private Room getRoom(String roomNo) {
-        return roomRedisRepository.findById(roomNo)
-                .orElseThrow(() -> new IllegalStateException("no room"));
-    }
-
-
 
     /* 방에 참여한 사용자인지 유효성 체크 */
     private void checkValidDeviceId(Room room, String deviceId) {

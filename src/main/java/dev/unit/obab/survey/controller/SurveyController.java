@@ -2,7 +2,6 @@ package dev.unit.obab.survey.controller;
 
 import dev.unit.obab.survey.controller.dto.CreateSurveyRequest;
 import dev.unit.obab.survey.controller.dto.SurveyResponse;
-import dev.unit.obab.survey.domain.Survey;
 import dev.unit.obab.survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
