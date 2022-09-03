@@ -1,6 +1,5 @@
 package dev.unit.obab.room.domain;
 
-import static dev.unit.obab.room.domain.MealType.*;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +12,12 @@ class RoomTest {
 	void 방_생성_테스트() {
 		//given
 		int totalCount = 10;
-		MealType mealType = BREAKFAST;
+
 		//when
-		Room room = new Room(totalCount, mealType);
+		Room room = new Room(totalCount);
 
 		//then
 		assertThat(room.getTotalCount()).isEqualTo(totalCount);
-		assertThat(room.getMealType()).isEqualTo(mealType);
 	}
 
 	@Nested
@@ -29,7 +27,7 @@ class RoomTest {
 
 		@BeforeEach
 		void setUp() {
-			room = new Room(2, LUNCH);
+			room = new Room(2);
 		}
 
 		@Test
@@ -62,7 +60,7 @@ class RoomTest {
 	@Test
 	void 정원_다참_테스트() {
 		//given
-		Room room = new Room(2, NIGHT);
+		Room room = new Room(2);
 
 		room.enter("device1");
 		room.enter("device2");

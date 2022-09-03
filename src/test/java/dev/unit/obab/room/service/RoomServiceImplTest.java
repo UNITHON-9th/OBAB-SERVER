@@ -1,6 +1,5 @@
 package dev.unit.obab.room.service;
 
-import static dev.unit.obab.room.domain.MealType.*;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.unit.obab.core.util.RedisUtil;
-import dev.unit.obab.room.domain.MealType;
 import dev.unit.obab.room.domain.Room;
 import dev.unit.obab.room.repository.RoomRedisRepository;
 
@@ -32,16 +30,14 @@ class RoomServiceImplTest {
 	void 방_생성_테스트() {
 		//given
 		int totalCount = 5;
-		MealType mealType = BREAKFAST;
 
 		//when
-		String inviteCode = roomService.createRoom(totalCount, mealType);
+		String inviteCode = roomService.createRoom(totalCount);
 
 		//then
 		Room findRoom = roomRepository.findById(redisUtil.getData(inviteCode)).get();
 
 		assertThat(findRoom).isNotNull();
 		assertThat(findRoom.getTotalCount()).isEqualTo(totalCount);
-		assertThat(findRoom.getMealType()).isEqualTo(BREAKFAST);
 	}
 }

@@ -28,12 +28,8 @@ public class Room {
 	/* 입장 디바이스 정보들*/
 	private List<String> deviceIds = new ArrayList<>();
 
-	/* 식사 타입 */
-	private MealType mealType;
-
-	public Room(int totalCount, MealType mealType) {
+	public Room(int totalCount) {
 		this.totalCount = totalCount;
-		this.mealType = mealType;
 	}
 
 	public void enter(String deviceId) {
