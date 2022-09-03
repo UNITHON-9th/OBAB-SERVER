@@ -1,5 +1,6 @@
 package dev.unit.obab.notification.domain;
 
+import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,13 +14,13 @@ public class FcmMessage {
     @Builder
     public static class Message {
         private Notification notification;
+        private Map<String, String> data;
         private String token;
     }
 
     @Getter
     @Builder
-    public static  class Notification {
+    public static class Notification {
         private String title;
-        private String body;
     }
 }

@@ -18,6 +18,11 @@ import dev.unit.obab.core.exception.BadRequestException;
 import dev.unit.obab.core.exception.ExternalServerException;
 import dev.unit.obab.core.exception.NotFoundException;
 import dev.unit.obab.notification.domain.FcmMessage;
+import dev.unit.obab.notification.domain.FcmMessage.Message;
+import dev.unit.obab.notification.domain.FcmMessage.Notification;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
@@ -42,7 +47,7 @@ public class NotificationService {
     private final String FIREBASE_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
 
 
-    public void sendMessageTo(List<String> targets, String title, String body) {
+    public void sendMessageTo(List<String> targets, String roomNo) {
         OkHttpClient client = new OkHttpClient();
 
         Flux<String> fcmMessages = Flux.fromIterable(
@@ -67,11 +72,13 @@ public class NotificationService {
         );
     }
 
-    private String makeMessage(String targetToken, String title, String body) {
+    private String makeMessage(String targetToken, String roomNo) {
         FcmMessage message = FcmMessage.builder().message(
-            FcmMessage.Message.builder().token(targetToken).notification(
-                    FcmMessage.Notification.builder().title(title).body(body).build())
+            Message.builder().token(targetToken)
+                .data(Map.of("roomNo", roomNo))
+                .notification(Notification.builder().title("투표가 완료되었습니다.").build())
                 .build()).validateOnly(false).build();
+
         try {
             return objectMapper.writeValueAsString(message);
         } catch (JsonProcessingException e) {
