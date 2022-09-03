@@ -1,9 +1,10 @@
-package dev.unit.obab.survey.domain;
+package dev.unit.obab.survey.controller.dto;
 
+import dev.unit.obab.survey.domain.Survey;
 import lombok.Getter;
 
 @Getter
-public class SurveyDto {
+public class CreateSurveyRequest {
     private String roomNo;
     private String deviceId;
     private Integer country;
