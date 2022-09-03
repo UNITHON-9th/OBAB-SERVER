@@ -3,11 +3,11 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   redis:
-    host: 3.37.236.75
+    host: 43.200.197.100
     port: 6379
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://3.37.236.75:3306/obab
+    url: jdbc:mysql://localhost:3306/obab
     username: obab
     password: 1234
   jpa:

@@ -2,6 +2,7 @@ package dev.unit.obab.room.controller;
 
 import static dev.unit.obab.core.domain.ResponseType.*;
 
+import dev.unit.obab.room.controller.dto.RoomResponseDto;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -26,10 +27,10 @@ public class RoomController {
 	private final RoomService roomService;
 
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> createRoom(@Valid @RequestBody CreateRoomDto createRoomDto) {
-		String inviteCode = roomService.createRoom(createRoomDto.getTotalCount());
+	public ResponseEntity<RoomResponseDto> createRoom(@Valid @RequestBody CreateRoomDto createRoomDto) {
+		RoomResponseDto responseDto = roomService.createRoom(createRoomDto.getTotalCount());
 
-		return ResponseEntity.successResponse(Map.of("inviteCode", inviteCode));
+		return ResponseEntity.successResponse(responseDto);
 	}
 
 	@PostMapping("/enter")

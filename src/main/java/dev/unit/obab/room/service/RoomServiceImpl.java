@@ -1,5 +1,6 @@
 package dev.unit.obab.room.service;
 
+import dev.unit.obab.room.controller.dto.RoomResponseDto;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class RoomServiceImpl implements RoomService {
 	private final RedisUtil redisUtil;
 
 	@Override
-	public String createRoom(int totalCount) {
+	public RoomResponseDto createRoom(int totalCount) {
 		Room room = new Room(totalCount);
 
 		final Room savedRoom = roomRedisRepository.save(room);
@@ -31,7 +32,10 @@ public class RoomServiceImpl implements RoomService {
 		/* invitecode : roomno 저장 */
 		redisUtil.setData(inviteCode, savedRoom.getRoomNo());
 
-		return inviteCode;
+		return RoomResponseDto.builder()
+			.inviteCode(inviteCode)
+			.roomNo(savedRoom.getRoomNo())
+			.build();
 	}
 
 	@Override
