@@ -3,6 +3,8 @@ package dev.unit.obab.room.service;
 import static dev.unit.obab.room.domain.MealType.*;
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,9 +16,9 @@ import dev.unit.obab.room.domain.MealType;
 import dev.unit.obab.room.domain.Room;
 import dev.unit.obab.room.repository.RoomRedisRepository;
 
+@Transactional
 @ActiveProfiles("local")
 @SpringBootTest
-@Transactional
 class RoomServiceImplTest {
 
 	@Autowired
@@ -43,5 +45,34 @@ class RoomServiceImplTest {
 		assertThat(findRoom).isNotNull();
 		assertThat(findRoom.getTotalCount()).isEqualTo(totalCount);
 		assertThat(findRoom.getMealType()).isEqualTo(BREAKFAST);
+	}
+
+	@Nested
+	class 방_입장_테스트{
+
+		String inviteCode;
+
+		@BeforeEach
+		void setUp() {
+			inviteCode = roomService.createRoom(3, BREAKFAST);
+		}
+
+		@Test
+		void 방_입장_성공() {
+			//given
+			String device1 = "device1";
+
+			//when
+			String roomNo = roomService.enterRoom(inviteCode, device1);
+
+			//then
+			Room room = roomRepository.findById(roomNo).get();
+
+			assertThat(room).isNotNull();
+			assertThat(room.getDeviceIds())
+				.hasSize(1)
+				.containsExactly(device1);
+
+		}
 	}
 }
