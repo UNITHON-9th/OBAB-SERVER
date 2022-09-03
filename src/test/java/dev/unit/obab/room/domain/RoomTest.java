@@ -62,14 +62,13 @@ class RoomTest {
 		//given
 		Room room = new Room(2);
 
-		room.enter("device1");
-		room.enter("device2");
+		room.addSubmittedCount();
+		room.addSubmittedCount();
 
 		//when
 		boolean result = room.isFull();
 
 		//then
 		assertThat(result).isTrue();
-
 	}
 }
