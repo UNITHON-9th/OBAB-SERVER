@@ -24,46 +24,59 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SurveyServiceImpl implements SurveyService {
 
-	private final SurveyRepository surveyRepository;
-	private final RoomRedisRepository roomRedisRepository;
-	private final RoomService roomService;
-	private final NotificationService notificationService;
+    private final SurveyRepository surveyRepository;
+    private final RoomRedisRepository roomRedisRepository;
+    private final RoomService roomService;
+    private final NotificationService notificationService;
 
-	/* 개인 투표 결과 저장 */
-	public void saveSurveyResult(CreateSurveyRequest createSurveyRequest) {
 
-		Room room = roomService.getRoom(createSurveyRequest.getRoomNo());
+    /* 개인 투표 결과 저장 */
+    public void saveSurveyResult(CreateSurveyRequest createSurveyRequest) {
 
-		checkValidDeviceId(room, createSurveyRequest.getDeviceId());
-		surveyRepository.save(createSurveyRequest.toEntity());
+        Room room = roomService.getRoom(createSurveyRequest.getRoomNo());
 
-		room.addSubmittedCount();
-		roomRedisRepository.save(room);
+        checkValidDeviceId(room, createSurveyRequest.getDeviceId());
+        surveyRepository.save(createSurveyRequest.toEntity());
 
-		log.info(String.valueOf(room.isFull()));
-		log.info(String.valueOf(room.getDeviceIds()));
+        room.addSubmittedCount();
+        roomRedisRepository.save(room);
 
-		if (room.isFull()) {
-			log.info("@@@@@@@@@@@ Survey Finished @@@@@@@@@@@");
-			this.notificationService.sendMessageTo(room.getDeviceIds(), room.getRoomNo());
-		}
-	}
+        log.info(String.valueOf(room.isFull()));
+        log.info(String.valueOf(room.getDeviceIds()));
 
-	@Override
-	public SurveyResponse getSurveyResult(String deviceId, String roomNo) {
-		Survey survey = surveyRepository.findById(deviceId).orElseThrow();
+        if (room.isFull()) {
 
-		Room room = roomService.getRoom(roomNo);
-		return new SurveyResponse(survey, room.getSubmittedCount());
-	}
+            log.info("@@@@@@@@@@@ Survey Finished @@@@@@@@@@@");
+            this.notificationService.sendMessageTo(room.getDeviceIds(), room.getRoomNo());
 
-	/* 방에 참여한 사용자인지 유효성 체크 */
-	private void checkValidDeviceId(Room room, String deviceId) {
-		if (!room.getDeviceIds().contains(deviceId)) {
-			throw new IllegalArgumentException("방에 참여한 사용자가 아닙니다.");
-		}
-	}
+            // 자료구조에 저장 한 뒤 -> 알고리즘
+            /*
+            배열 내 deviceId값 반환하여 저장 -> 이후 deviceId값에 따라 SurveyResult에 저장
+            SurveyResult에서
+             */
+            List<String> deviceIds = room.getDeviceIds();
+            for(int i = 0; i< deviceIds.size(); i++) {
+                // 첫번째
+            }
+        }
+    }
 
+    @Override
+    public SurveyResponse getSurveyResult(String deviceId, String roomNo) {
+        Survey survey = surveyRepository.findById(deviceId).orElseThrow();
+
+        Room room = roomService.getRoom(roomNo);
+        return new SurveyResponse(survey, room.getSubmittedCount(), room.getTotalCount());
+    }
+
+    /* 방에 참여한 사용자인지 유효성 체크 */
+    private void checkValidDeviceId(Room room, String deviceId) {
+        if (!room.getDeviceIds().contains(deviceId)) {
+            throw new IllegalArgumentException("방에 참여한 사용자가 아닙니다.");
+        }
+    }
+    
+    	
 	public CalculateSurveyResult calculateSurvey(String roomNo) {
 		Room room = roomService.getRoom(roomNo);
 
@@ -113,4 +126,5 @@ public class SurveyServiceImpl implements SurveyService {
 		return surveyRepository.findById(deviceId)
 			.orElseThrow(() -> new IllegalStateException("deviceId의 값들이 존재하지 않습니다."));
 	}
+
 }
