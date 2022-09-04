@@ -60,5 +60,4 @@ public class RoomServiceImpl implements RoomService {
 		return roomRedisRepository.findById(roomNo)
 			.orElseThrow(() -> new IllegalStateException("해당하는 roomNo에 해당하는 방이 없습니다."));
 	}
-
 }

@@ -46,8 +46,8 @@ public class NotificationService {
     public void sendMessageTo(List<String> targets, String roomNo) {
         OkHttpClient client = new OkHttpClient();
 
-        Flux<String> fcmMessages = Flux.fromIterable(
-            targets.stream().map(token -> makeMessage(token, roomNo)).collect(Collectors.toList()));
+		Flux<String> fcmMessages = Flux.fromIterable(
+			targets.stream().map(token -> makeMessage(token, roomNo)).collect(Collectors.toList()));
 
         fcmMessages.subscribe(message -> {
                 RequestBody requestBody = RequestBody.create(message,
