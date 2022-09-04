@@ -45,6 +45,9 @@ public class Room {
 	}
 
 	public void addSubmittedCount() {
+		if (submittedCount >= totalCount) {
+			throw new IllegalArgumentException("결과 제출이 완료되었습니다.");
+		}
 		++this.submittedCount;
 	}
 

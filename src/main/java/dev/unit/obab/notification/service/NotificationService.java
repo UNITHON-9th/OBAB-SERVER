@@ -2,6 +2,7 @@ package dev.unit.obab.notification.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +21,6 @@ import dev.unit.obab.core.exception.NotFoundException;
 import dev.unit.obab.notification.domain.FcmMessage;
 import dev.unit.obab.notification.domain.FcmMessage.Message;
 import dev.unit.obab.notification.domain.FcmMessage.Notification;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
@@ -50,8 +48,8 @@ public class NotificationService {
     public void sendMessageTo(List<String> targets, String roomNo) {
         OkHttpClient client = new OkHttpClient();
 
-        Flux<String> fcmMessages = Flux.fromIterable(
-            targets.stream().map(token -> makeMessage(token, title, body)).collect(Collectors.toList()));
+		Flux<String> fcmMessages = Flux.fromIterable(
+			targets.stream().map(token -> makeMessage(token, roomNo)).collect(Collectors.toList()));
 
         fcmMessages.subscribe(message -> {
                 RequestBody requestBody = RequestBody.create(message,
