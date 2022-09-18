@@ -22,8 +22,8 @@ public class TotalSurveyResultResponse {
 	private List<Integer> hots;
 
 	public TotalSurveyResultResponse(CalculateSurveyResult surveyResult, Optional<Food> food) {
-		this.image = food.map(Food::getImage).orElse("no image");
-		this.name = food.map(Food::getName).orElse("no food");
+		this.image = food.map(Food::getImage).orElse("https://unihton-9th.s3.ap-northeast-2.amazonaws.com/obab_img/%E1%84%80%E1%85%A1%E1%86%AF%E1%84%87%E1%85%B5%E1%84%90%E1%85%A1%E1%86%BC.jpeg");
+		this.name = food.map(Food::getName).orElse("갈비탕");
 		this.totalCount = surveyResult.getTotalCount();
 		this.countries = surveyResult.getCountryList();
 		this.foods = surveyResult.getFoodTypeList();
